@@ -1,0 +1,4 @@
+docopt==0.6.2
+facebook-sdk==2.0.0
+pymongo==3.4.0
+requests==2.12.3
