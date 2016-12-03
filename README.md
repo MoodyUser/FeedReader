@@ -2,7 +2,7 @@
 ### Simple Facebook terminal reader for populating a [MongoDB](https://www.mongodb.com/).
 
 
-##### Prerequisites
+##### Prerequisites:
 
  [MongoDB](https://www.mongodb.com/) running.
 

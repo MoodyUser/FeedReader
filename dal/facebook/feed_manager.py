@@ -1,7 +1,6 @@
 import settings
 from core.dal import mdb_connect, fb_connect
 
-
 URL = "{}"
 OWNER_URL = "{}/feed?limit={}"
 
@@ -9,13 +8,20 @@ OWNER_URL = "{}/feed?limit={}"
 def insert_update_feed(o, owner_id=None, url="", check=False):
     if not (o.get('message', False) or o.get('story', False)):
         # only message or storys in our case.
+        return "No message or story didn't updated"
+
+    if not (o.get('created_time', False) or o.get('updated_time', False)):
+        # only created_time or updated_time in our case.
         return False
 
+    # In pages facebook feed not showing updated_time.
+    update_time = o['updated_time'] if o.get('updated_time', '') else o.get('created_time', None)
+    message = o['message'] if o.get('message', '') else o.get('story', None)
+
     data = {'id': o['id'],
-            'message': o.get('message', None),
-            'story': o.get('story', None),
+            'message': message,
             'url': url,
-            'created_time': o['created_time'],
+            'updated_time': update_time,
             }
 
     if owner_id:
@@ -30,7 +36,7 @@ def update_owner_feed(owner_id, limit=100):
     url = OWNER_URL.format(owner_id, limit)
     o = fb_connect.get_facebook_page(url)
     if o:
-        feeds = [insert_update_feed(feed, owner_id, url, check=False) for feed in o['data']]
+        feeds = [insert_update_feed(feed, owner_id, URL.format(feed['id']), check=False) for feed in o['data']]
         return feeds
     return False
 
@@ -53,7 +59,7 @@ def update_multi_ids(ids, owner_id):
 
 
 def reset_db():
-    mdb_connect.reset_db(settings.FEED)
+    mdb_connect.reset_db(settings.FEEDS)
 
 
 def get_feeds():
