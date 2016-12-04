@@ -75,5 +75,6 @@ def reset_db():
 def get_pages():
     pages = {}
     for index, page in enumerate(mdb_connect.get_collection(settings.PAGES)):
-        pages[page['id']] = page
+        page['_id'] = str(page['_id'])
+        pages[page['_id']] = page
     return pages

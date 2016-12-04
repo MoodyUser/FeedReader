@@ -64,6 +64,7 @@ def reset_db():
 
 def get_feeds():
     feeds = {}
-    for index, feed in enumerate(mdb_connect.get_collection(settings.FEED)):
+    for index, feed in enumerate(mdb_connect.get_collection(settings.FEEDS)):
+        feed['_id'] = str(feed['_id'])
         feeds[feed['id']] = feed
     return feeds
