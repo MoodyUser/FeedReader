@@ -23,6 +23,7 @@ def pages():
 
 @route('/feeds')
 def feeds():
+    response.headers['Access-Control-Allow-Origin'] = '*'
     items = [item for key, item in feed_manager.get_feeds().items()]
     response.content_type = 'application/json'
     return json.dumps(items)

@@ -2,7 +2,7 @@ import settings
 from core.dal import mdb_connect, fb_connect
 
 URL = "{}"
-OWNER_URL = "{}/feed?limit={}"
+OWNER_URL = "{}/feed?fields=id,message,story,updated_time,created_time,full_picture&limit={}{}"
 
 
 def insert_update_feed(o, owner_id=None, url="", check=False):
@@ -22,6 +22,7 @@ def insert_update_feed(o, owner_id=None, url="", check=False):
             'message': message,
             'url': url,
             'updated_time': update_time,
+            'picture': o.get('full_picture', None),
             }
 
     if owner_id:
@@ -32,8 +33,8 @@ def insert_update_feed(o, owner_id=None, url="", check=False):
     return update_rst['ok'] == 1
 
 
-def update_owner_feed(owner_id, limit=100):
-    url = OWNER_URL.format(owner_id, limit)
+def update_owner_feed(owner_id, limit=100, since=None):
+    url = OWNER_URL.format(owner_id, limit, '&since = ' + str(since) if since else '')
     o = fb_connect.get_facebook_page(url)
     if o:
         feeds = [insert_update_feed(feed, owner_id, URL.format(feed['id']), check=False) for feed in o['data']]
