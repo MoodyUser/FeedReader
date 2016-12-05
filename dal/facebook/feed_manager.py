@@ -1,7 +1,7 @@
 import settings
 from core.dal import mdb_connect, fb_connect
 
-URL = "{}"
+URL = "https://www.facebook.com/{}"
 OWNER_URL = "{}/feed?fields=id,message,story,updated_time,created_time,full_picture&limit={}{}"
 
 
