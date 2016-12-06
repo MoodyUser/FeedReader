@@ -3,6 +3,7 @@
 This tool is design to keep track with feeds from facebook
 
 Usage:
+  reader  add_search <filter>  [--type=1]
   reader  add_page <page_id> [--feeds] [--type=1]
   reader  list_pages
   reader  update <page_id> [--limit=100] [--feeds] [--type=1]
@@ -53,6 +54,9 @@ if __name__ == "__main__":
         feeds = arguments['--feeds'] if arguments['--feeds'] else False
         if feeds:
             assert all(page_manager.update_feeds(arguments['<page_id>'])), "Please enter a correct page id"
+    if arguments['add_search']:
+        p_type = int(arguments['--type']) if arguments['--type'] else page_manager.PageType.page.value
+        assert page_manager.update_pages_by_search(arguments['<filter>'], p_type), "Search error."
     if arguments['remove_page']:
         page_manager.remove_page_by_id(arguments['<page_id>'])
     if arguments['list_pages']:

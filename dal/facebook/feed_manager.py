@@ -34,6 +34,7 @@ def insert_update_feed(o, owner_id=None, url="", check=False):
 
 
 def update_owner_feed(owner_id, limit=100, since=None):
+    print("Getting {} feeds.".format(owner_id))
     url = OWNER_URL.format(owner_id, limit, '&since = ' + str(since) if since else '')
     o = fb_connect.get_facebook_page(url)
     if o:
